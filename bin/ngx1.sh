@@ -1,0 +1,1 @@
+../ngx_server/ngx1.sh
