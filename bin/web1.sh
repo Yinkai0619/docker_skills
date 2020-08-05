@@ -1,1 +1,1 @@
-../web1/web1.sh
+/home/yinkai/Projects/docker_skills/web1/web1.sh
