@@ -4,6 +4,7 @@ con_name="ngx1"
 vol="$PWD/${con_name}/"
 ngx_conf_file="/home/yinkai/Projects/docker_skills/ngx_server/conf/"
 ngx_logs="/home/yinkai/Projects/docker_skills/ngx_server/logs/"
+cache_dir="/home/yinkai/Projects/docker_skills/ngx_server/cache/"
 
 
 function start {
@@ -11,6 +12,7 @@ function start {
 		-P --rm -d \
 		-v ${ngx_logs}:/var/log/nginx/ \
 		-v ${ngx_conf_file}:/etc/nginx/ \
+		-v ${cache_dir}:/cache/ \
 		nginx:latest &> /dev/null
 }
 

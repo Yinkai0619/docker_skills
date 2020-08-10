@@ -21,8 +21,6 @@ http {
 
     access_log  /var/log/nginx/access.log  main;
 
-	proxy_cache_path /cache/ levels=1:1 keys_zone=mycache:32m;
-
     sendfile        on;
     #tcp_nopush     on;
 
