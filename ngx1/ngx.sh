@@ -46,12 +46,12 @@ then
 elif [ $1 == 'start' ]
 then
 	start
-	sudo docker container ls -a
+	print_status
 
 elif [ $1 == "stop" ]
 then
 	stop
-	sudo docker container ls -a
+	print_status
 
 elif [ $1 == "restart" ]
 then
