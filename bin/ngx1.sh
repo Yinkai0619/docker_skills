@@ -1,1 +1,0 @@
-/home/yinkai/Projects/docker_skills/ngx_server/ngx1.sh
