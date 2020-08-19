@@ -4,7 +4,7 @@
 if [ -z "$*" ]; then
 	#echo -e "The arguments given are incorrect.\n"
 	echo -e "The argument cannot be empty.\n"  
-	echo -e "Usage: $0 [start|stop|restart|check] CONTAINERS \n"
+	echo -e "Usage: $(basename $0) [start|stop|restart|[check|status]] [CONTAINERS] \n"
 	exit 5
 fi
 
@@ -14,16 +14,16 @@ con_args=${@:2}		# 实参中的容器名
 
 function start {
 	con_name="$1"
-	con_root="/home/yinkai/Projects/docker_skills/${con_name}/"
-	data_vol="${con_root}/html/"
+	con_root="/home/yinkai/Projects/docker_skills/elasticsearch/${con_name}/"
+	data_dir="${con_root}/html/"
 	log_dir="${con_root}/logs/"
-	ngx_conf="${con_root}/conf/"
+	conf_dir="${con_root}/conf/"
 
 	sudo docker container run --name ${con_name} \
 		-P -d --rm \
 		-v ${log_dir}:/var/log/nginx/ \
-		-v ${data_vol}:/usr/share/nginx/html/ \
-		-v ${ngx_conf}:/etc/nginx/ \
+		-v ${data_dir}:/els/ \
+		-v ${conf_dir}:/etc/nginx/ \
 		nginx:latest > /dev/null
 }
 
@@ -88,7 +88,7 @@ then
 	done
 	exit 0
 
-elif [ $1 == "check" ]
+elif [ $1 == "check" -o $1 == "status" ]
 then
 	if [[ -z "$2" || $2 == "all" ]]; then
 		sudo docker container ls
