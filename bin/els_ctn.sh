@@ -14,17 +14,24 @@ con_args=${@:2}		# 实参中的容器名
 
 function start {
 	con_name="$1"
-	con_root="/home/yinkai/Projects/docker_skills/elasticsearch/${con_name}/"
-	data_dir="${con_root}/html/"
+	con_root="/home/yinkai/Projects/docker_skills/elasticsearch/${con_name}"
+	data_dir="${con_root}/data/"
 	log_dir="${con_root}/logs/"
 	conf_dir="${con_root}/conf/"
+	ip_addr="10.0.1.$(echo ${con_name} | tr -cd "[0-9]")"	# 取出容器名称中的数字部分作为IP地址, 此处需与elasticsearch.yml配置文件中的地址保持一致
 
 	sudo docker container run --name ${con_name} \
 		-P -d --rm \
-		-v ${log_dir}:/var/log/nginx/ \
-		-v ${data_dir}:/els/ \
-		-v ${conf_dir}:/etc/nginx/ \
-		nginx:latest > /dev/null
+		-v ${log_dir}:/els/logs \
+		-v ${data_dir}:/els/data \
+		-v ${conf_dir}:/etc/elasticsearch \
+		--network mybr0 \
+		--ip ${ip_addr} \
+		--hostname ${con_name} \
+		--add-host=node01:10.0.1.1 \
+		--add-host=node02:10.0.1.2 \
+		--add-host=node03:10.0.1.3 \
+		elasticsearch:latest > /dev/null
 }
 
 
