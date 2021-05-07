@@ -1,13 +1,14 @@
 #sudo docker container run --name db --hostname db \
 #	-d \
 #	-p 127.0.0.1:33061:3306 \
-#	-v /mnt/docker_volumes/db/data/:/var/lib/mysql \
+#	-v /mnt/dvs/db/:/var/lib/mysql \
 #	-e MYSQL_ROOT_PASSWORD=mydbpass \
 #	mariadb:latest
 
 sudo docker container run --name db1 --hostname db1 \
-	--rm -d \
-	-p 127.0.0.1::3306 \
-	-v /mnt/docker_volumes/db/data/:/var/lib/mysql \
+	--rm -d -P \
+	-p 127.0.0.1:33061:3306 \
+	-v /mnt/dvs/db/:/var/lib/mysql \
+	-v /mnt/dvs/mysql_conf/:/etc/mysql \
 	-e MYSQL_ROOT_PASSWORD=mydbpass \
 	mariadb:latest
