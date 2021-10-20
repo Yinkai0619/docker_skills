@@ -1,0 +1,89 @@
+# version: '2.2'
+version: '3'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      # - target: /usr/share/elasticsearch/data
+      # - /home/yinkai/Projects/docker_skills/els/node01/config:/usr/share/elasticsearch/config
+      # - /home/yinkai/Projects/docker_skills/els/node01/data:/usr/share/elasticsearch/data
+      # - /home/yinkai/Projects/docker_skills/els/node01/logs:/usr/share/elasticsearch/logs
+      - ${PWD}/es01/config:/usr/share/elasticsearch/config
+      - ${PWD}/es01/data:/usr/share/elasticsearch/data
+      - ${PWD}/es01/logs:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    networks:
+      # - elastic
+      - default
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ${PWD}/es02/config:/usr/share/elasticsearch/config
+      - ${PWD}/es02/data:/usr/share/elasticsearch/data
+      - ${PWD}/es02/logs:/usr/share/elasticsearch/logs
+      # - data02:/usr/share/elasticsearch/data
+    networks:
+      # - elastic
+      - default
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ${PWD}/es03/config:/usr/share/elasticsearch/config
+      - ${PWD}/es03/data:/usr/share/elasticsearch/data
+      - ${PWD}/es03/logs:/usr/share/elasticsearch/logs
+      # - data03:/usr/share/elasticsearch/data
+    networks:
+  #     - elastic
+      - default
+
+# volumes:
+#   data01:
+#     driver: local
+#   data02:
+#     driver: local
+#   data03:
+#     driver: local
+
+networks:
+  # elastic:
+  #   driver: bridge
+  default:
+   external:
+    name: mybr0
