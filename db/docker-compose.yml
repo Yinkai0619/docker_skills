@@ -1,0 +1,24 @@
+version: '3.9'
+
+services: 
+  db: 
+    container_name: db
+    hostname: db
+    image: mariadb:latest
+    volumes: 
+      - /mnt/dvs/db/:/var/lib/mysql
+      - /mnt/dvs/mysql_conf/:/etc/mysql
+      - /mnt/dvs/mydata/:/mydata
+    networks: 
+      default: 
+        ipv4_address: 172.27.0.1
+    ports: 
+      - "127.0.0.1:33061:3306"
+    environment: 
+      MYSQL_ROOT_PASSWORD: mydbpass
+
+
+networks: 
+  default: 
+    external: true
+    name: mybr0
